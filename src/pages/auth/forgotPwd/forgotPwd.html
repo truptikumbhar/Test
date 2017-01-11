@@ -1,0 +1,47 @@
+<!--  =================== Forgot Password ============== -->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Forgot Password</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <form [formGroup]="fpForm" (ngSubmit)="forgotPwd()" >
+    <ion-list>
+	  <ion-card  *ngIf="notFound == 'wrong'">
+			 <span class="errMsg"> Wrong Mobile Number Or Email Address!</span>
+       </ion-card>
+	  <ion-item  *ngIf="notFound == ''">
+			 <span class="successMsg"> Your Password Will Be Sent To Your Registered Email address.</span>
+       </ion-item>
+      <ion-item *ngIf="notFound !== ''">
+		<ion-label color="primary">Mobile Number <span class="mandField">*</span></ion-label>
+        <ion-input formControlName="mobile" type="mobile" placeholder="Please Enter Your Mobile Number..." [(ngModel)]="fpForm.controls['mobile'].value" name="mobile"></ion-input>
+      </ion-item>
+	  <ion-card  *ngIf="formErrors.mobile">
+			 <span class="errMsg"> {{ formErrors.mobile }} </span>
+       </ion-card>
+      <ion-item *ngIf="notFound !== ''">
+		<ion-label color="primary">Email Address <span class="mandField">*</span></ion-label>
+        <ion-input formControlName="emailID" type="email" placeholder="Please Enter Your Registered Email Address..." [(ngModel)]="fpForm.controls['emailID'].value" name="emailID"></ion-input>
+      </ion-item>
+	  <ion-card  *ngIf="formErrors.emailID || noConnection()">
+			 <span class="errMsg"> {{ formErrors.emailID }} </span>
+       </ion-card>
+    </ion-list>
+    <button ion-button block [disabled]="invalidForm || noConnection()"  *ngIf="notFound !== '' "
+      class="log-in-btn">Submit
+    </button>
+    <div padding class="formMsg" *ngIf="invalidForm || noConnection()">
+      The submit button will remain disabled until:
+		<ul>
+			<li>All the mandatory fields (with <span class="mandField">*</span>) are not filled with data.</li>
+			<li>There is a internet connection available.</li>
+		</ul>
+    </div>	
+	
+  </form>	
+</ion-content>

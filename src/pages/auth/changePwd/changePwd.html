@@ -1,0 +1,57 @@
+<!-- ============== Change password ================ -->
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>  
+    <ion-title>Change Password</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <form [formGroup]="cpForm" (ngSubmit)="changePwd()">
+    <ion-list>
+	  <ion-card  *ngIf="notFound == 'wrong'">
+			 <span class="errMsg"> Wrong password!</span>
+       </ion-card>
+	  <ion-item  *ngIf="notFound == ''">
+			 <span class="successMsg"> The Password has been changed successfully!.</span>
+       </ion-item>
+      <ion-item *ngIf="notFound !== ''">
+		<ion-label color="primary">Existing Password <span class="mandField">*</span></ion-label>
+        <ion-input formControlName="currPassword" type="password" placeholder="Please Enter Your Existing Password..." [(ngModel)]="cpForm.controls['currPassword'].value" name="currPassword"></ion-input>
+      </ion-item>
+	  <ion-card  *ngIf="formErrors.currPassword">
+			 <span class="errMsg"> {{ formErrors.currPassword }} </span>
+       </ion-card>
+      <ion-item *ngIf="notFound !== ''">
+		<ion-label color="primary">New Password <span class="mandField">*</span></ion-label>
+        <ion-input formControlName="newPassword" type="password" placeholder="Please Enter New Password..." [(ngModel)]="cpForm.controls['newPassword'].value" name="newPassword"></ion-input>
+      </ion-item>
+	  <ion-card  *ngIf="formErrors.newPassword">
+			 <span class="errMsg"> {{ formErrors.newPassword }} </span>
+       </ion-card>
+      <ion-item *ngIf="notFound !== ''">
+		<ion-label color="primary">Confirm Password <span class="mandField">*</span></ion-label>
+        <ion-input formControlName="passwordMatch" type="password" placeholder="Please Re-enter New Password..." [(ngModel)]="cpForm.controls['passwordMatch'].value" name="passwordMatch"></ion-input>
+      </ion-item>
+	  <ion-card  *ngIf="formErrors.passwordMatch">
+			 <span class="errMsg"> {{ formErrors.passwordMatch }} </span>
+       </ion-card>
+    </ion-list>
+    <button ion-button block [disabled]="invalidForm || noConnection()"  *ngIf="notFound !== ''" class="log-in-btn">Submit</button>
+	
+    <div padding class="formMsg" *ngIf="invalidForm || noConnection()">
+      The submit button will remain disabled until:
+		<ul>
+			<li>All the mandatory fields (with <span class="mandField">*</span>) are not filled with data.</li>
+			<li>There is a internet connection available.</li>
+		</ul>
+    </div>	
+	
+  </form>	
+
+</ion-content>

@@ -1,0 +1,73 @@
+<!--  =================== SignIN ----------------------- -->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Login</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <div style="margin: auto;margin-top: 40px;width: 150px;height: 150px; no-repeat;">
+    <img src="img/icon.png" />
+  </div>
+  <!-- <div style="margin: auto;margin-top: 50px;width: 150px;height: 75px;background:url('img/icon.png') no-repeat;">
+    <img src="img/icon.png" />
+</div>-->
+
+  <form [formGroup]="siForm" (ngSubmit)="login()" >
+    <ion-list>
+	 
+      <ion-item>
+		<ion-label floating color="primary">Mobile Number <span class="mandField">*</span></ion-label>
+        <ion-input formControlName="mobile" type="number" [(ngModel)]="siForm.controls['mobile'].value" name="mobile" ></ion-input>
+      </ion-item>
+	  
+
+      <ion-item>
+		<ion-label floating color="primary">Password <span class="mandField">*</span></ion-label>
+        <ion-input formControlName="password" type="password" [(ngModel)]="siForm.controls['password'].value" name="password"></ion-input>
+      </ion-item>
+	  
+	  
+    </ion-list>
+
+    <button ion-button block [disabled]="invalidForm || noConnection()" class="log-in-btn">Sign In</button>
+    <!--<div padding class="formMsg" *ngIf="invalidForm || noConnection()">
+      The submit button will remain disabled until:
+		<ul>
+			<li>All the mandatory fields (with <span class="mandField">*</span>) are not filled with data.</li>
+			<li>There is a internet connection available.</li>
+		</ul>
+    </div>-->
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+          <div  *ngIf="formErrors.mobile">
+              <span class="errMsg">* {{ formErrors.mobile }} </span>
+          </div>
+        <div *ngIf="formErrors.password">
+			 <span class="errMsg">* {{ formErrors.password }} </span>
+        </div>
+        
+         <div  *ngIf="notFound !== ''">
+			 <span class="errMsg"> Wrong Mobile Number Or Password </span>
+        </div>
+        
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+    
+    
+    <div padding class="error" *ngIf="error">
+      <p>{{error}}</p>
+    </div>
+	<div style="text-align: center;">
+	<a (click)="openForgotPasswordPage()">  Forgot Password?  </a>
+
+    <!--<br>Not signed up yet? <a (click)="openSignUpPage()"> Sign Up</a>-->
+	</div>
+	
+  </form>
+</ion-content>

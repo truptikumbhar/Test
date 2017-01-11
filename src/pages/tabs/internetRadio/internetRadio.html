@@ -1,0 +1,37 @@
+<!-- ================= Internet Radio =================== -->
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Internet Radio</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-card>
+      <img src="img/radio.png" width=100%>
+      <!--<div align="center"><audio class="embed-responsive-item" controls="controls"><source src="http://38.107.243.226:8437/;stream.mp3" type="audio/mp3" />Your browser does not support the audio element.</audio></div>-->
+	  
+      <!--<ion-col center text-center>
+          <button ion-button round color="dark" (click)="play()"> 
+            <ion-icon name="play"></ion-icon>
+          </button> 
+          <button ion-button round color="dark" (click)="pause()"> 
+            <ion-icon name="pause"></ion-icon>
+          </button>
+      </ion-col>-->
+	  
+	  <ion-col center text-center>
+          <button *ngIf="!playing" ion-button round color="dark" (click)="play()"> 
+            <ion-icon name="play"></ion-icon>
+          </button> 
+          <button *ngIf="playing" ion-button round color="dark" (click)="pause()"> 
+            <ion-icon name="pause"></ion-icon>
+          </button>
+      </ion-col>
+  </ion-card>
+</ion-content>

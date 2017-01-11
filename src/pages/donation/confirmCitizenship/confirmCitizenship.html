@@ -1,0 +1,24 @@
+<!-- ==================== Confirm Residency Page ===================  -->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Confirm Indian Citizenship</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content  padding>
+    <ion-list>
+	  <ion-item >
+			<ion-label>I confirm, I am an Indian Citizen</ion-label>
+			<ion-checkbox [(ngModel)]="isIndianCitizen"></ion-checkbox>
+       </ion-item>
+	  <ion-card >
+			<p>Tej Gyan Foudation is registered as a Charitable Trust in India. Donations to Tej Gyan Foudation are exempt from Income Tax under Section 80G of the Income Tax Act. <br><br>
+
+			</p>
+       </ion-card>
+	</ion-list>
+    <button ion-button block [disabled]="!isIndianCitizen || noConnection()" class="log-in-btn" (click)="loadPaymentGatewayPage()">Accept</button>	
+    <button ion-button block class="log-in-btn" (click)="loadLandingPage()" color="danger">Reject</button>	
+</ion-content>

@@ -1,0 +1,13 @@
+page-landingPg {
+// background center image for sign in page
+  ion-content{
+  background: url("../img/image1.jpg") no-repeat center center fixed; 
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        background-size: cover;
+}
+// transparent Login Form
+  ion-item{
+    background-color: transparent;
+  }
+}

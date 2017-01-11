@@ -1,0 +1,584 @@
+<ion-header>
+
+  <ion-navbar>
+    <button *ngIf="data &&  data != 'notFound'" ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+  
+	<ion-title *ngIf="data &&  data != 'notFound'">Profile</ion-title>	
+    <ion-title *ngIf="!data || data == 'notFound'">Sign Up</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+	  <form [formGroup]="suForm" (submit)="saveSignUpData()" >
+    <ion-list>
+      <ion-item *ngIf="false">
+		<ion-label color="primary">Id</ion-label>
+        <ion-input formControlName="id" type="text" [(ngModel)]="suForm.controls['id'].value" name="id" ></ion-input>
+      </ion-item>
+	  <ion-item  *ngIf="formMsg && formMsg.indexOf('successfully') > -1">
+			 <span class="successMsg"> {{formMsg}}</span>
+       </ion-item>
+      <ion-item *ngIf="false">
+		<ion-label color="primary">Salutation</ion-label>
+        <ion-select formControlName="salutation" [(ngModel)]="suForm.controls['salutation'].value" name="salutation">
+		  <ion-option value="Shri">Shri</ion-option>
+		  <ion-option value="Sau">Sau</ion-option>
+		  <ion-option value="Shrimati">Shrimati</ion-option>
+		  <ion-option value="Mr">Mr</ion-option>
+		  <ion-option value="Mrs">Mrs</ion-option>
+		  <ion-option value="Miss">Miss</ion-option>
+		  <ion-option value="Ms">Ms</ion-option>
+		  <ion-option value="Dr">Dr</ion-option>
+		</ion-select>
+     </ion-item>
+     <ion-item>
+		<ion-label color="primary">Name <span class="mandField">*</span></ion-label>
+        <ion-input formControlName="name" type="text" placeholder="First Name    Middle Name    Last Name" [(ngModel)]="suForm.controls['name'].value" name="name" ></ion-input>
+	</ion-item>
+	  <ion-card  *ngIf="formErrors.name">
+			 <span class="errMsg"> {{ formErrors.name }} </span>
+       </ion-card>
+	<ion-item *ngIf="data &&  data != 'notFound'">
+		<ion-label color="primary">Mobile</ion-label>
+        <ion-input formControlName="mobile" type="number" disabled [(ngModel)]="suForm.controls['mobile'].value" name="mobile"></ion-input>
+    </ion-item>
+	<ion-item *ngIf="!data || data == 'notFound'">
+		<ion-label color="primary">Mobile <span class="mandField">*</span></ion-label>
+        <ion-input formControlName="mobile" type="number" [attr.maxlength]="10" placeholder="Please Enter Mobile Number Here.." [(ngModel)]="suForm.controls['mobile'].value" name="mobile"></ion-input>
+      </ion-item>
+	  <ion-card  *ngIf="formErrors.mobile">
+			<span class="errMsg"> {{ formErrors.mobile }} </span>
+       </ion-card>
+      <ion-item>
+		<ion-label color="primary">Email ID <span class="mandField">*</span></ion-label>
+        <ion-input formControlName="emailID" type="text" placeholder="Please Enter Your Email ID Here.." [(ngModel)]="suForm.controls['emailID'].value" name="emailID"></ion-input>
+      </ion-item>
+	  <ion-card  *ngIf="formErrors.emailID">
+			<span class="errMsg"> {{ formErrors.emailID }} </span>
+       </ion-card>
+	  
+      <ion-item name="passwordItem">
+		<ion-label color="primary">Password <span class="mandField">*</span></ion-label>
+		<ion-input formControlName="password" type="password" placeholder="Please Enter Password Here.." [(ngModel)]="suForm.controls['password'].value" name="password" (click)="showPasswordInfo()" (blur)="hidePasswordInfo()"></ion-input>
+      </ion-item>
+	  <ion-card  *ngIf="formErrors.password">
+			<span class="errMsg"> {{ formErrors.password }} </span>
+       </ion-card>
+<!--      <ion-card  *ngIf="isPasswordFieldActive">
+			<ion-card-content class="fieldInfo">
+              <i>Password must contain at least one number, lower case letter, upper case letter and valid (! @ # $ % ^ &amp; * \ _ +) special character.</i>
+            </ion-card-content>
+      </ion-card>-->
+	   
+	  <ion-item>
+		<ion-label color="primary">Confirm Password <span class="mandField">*</span></ion-label>
+		<ion-input formControlName="passwordMatch" type="password" placeholder="Please Retype The Password Here..." [(ngModel)]="suForm.controls['passwordMatch'].value" name="passwordMatch"></ion-input>
+	  </ion-item>      
+	  <ion-card  *ngIf="formErrors.passwordMatch">
+			<span class="errMsg"> {{ formErrors.passwordMatch }} </span>
+       </ion-card>
+	  <ion-item *ngIf="data &&  data != 'notFound'">
+		<ion-label color="primary">Khoji ID Available? </ion-label>
+        <!--[checked]="suForm.controls['userID'] && suForm.controls['userID'].value && suForm.controls['userID'].value!=''" -->
+        <ion-toggle formControlName="isKhojiID" [(ngModel)]="khojiIdAvailable" ></ion-toggle>
+      </ion-item>
+      <ion-item *ngIf="khojiIdAvailable" >
+		<ion-label color="primary">Khoji ID</ion-label>
+        <ion-input formControlName="userID" type="text" placeholder="Please Enter Khoji ID Here.." [(ngModel)]="suForm.controls['userID'].value" name="khojiID"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="data &&  data != 'notFound'">
+		<ion-label color="primary">Address 1 </ion-label>
+        <ion-input formControlName="address1" type="text" placeholder="Please Enter Address Line 1 Here.." [(ngModel)]="suForm.controls['address1'].value" name="address1"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="data &&  data != 'notFound'">
+		<ion-label color="primary">Address 2 </ion-label>
+        <ion-input formControlName="address2" type="text" placeholder="Please Enter Address Line 2 Here.." [(ngModel)]="suForm.controls['address2'].value" name="address2"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="data &&  data != 'notFound'">
+		<ion-label color="primary">City</ion-label>
+        <ion-input formControlName="city" type="text" placeholder="Please Enter City Here.." [(ngModel)]="suForm.controls['city'].value" name="city"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="data &&  data != 'notFound'">
+		<ion-label color="primary">Pin Code</ion-label>
+        <ion-input formControlName="pinCode" type="text" placeholder="Please Enter Pin/Zip Code Here.." [(ngModel)]="suForm.controls['pinCode'].value" name="pinCode"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="data &&  data != 'notFound'">
+		<ion-label color="primary">District</ion-label>
+        <ion-input formControlName="district" type="text" placeholder="Please Enter District Here.." [(ngModel)]="suForm.controls['district'].value" name="district"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="data &&  data != 'notFound'">
+		<ion-label color="primary">Country</ion-label>
+        <ion-select formControlName="country" [(ngModel)]="suForm.controls['country'].value" name="country">        
+						<ion-option value="AF">Afghanistan</ion-option>
+						<ion-option value="AL">Albania</ion-option>
+						<ion-option value="DZ">Algeria</ion-option>
+						<ion-option value="AS">American Samoa</ion-option>
+						<ion-option value="AD">Andorra</ion-option>
+						<ion-option value="AO">Angola</ion-option>
+						<ion-option value="AI">Anguilla</ion-option>
+						<ion-option value="AG">Antigua</ion-option>
+						<ion-option value="AR">Argentina</ion-option>
+						<ion-option value="AM">Armenia</ion-option>
+						<ion-option value="AW">Aruba</ion-option>
+						<ion-option value="AU">Australia</ion-option>
+						<ion-option value="AT">Austria</ion-option>
+						<ion-option value="AZ">Azerbaijan</ion-option>
+						<ion-option value="BS">Bahamas</ion-option>
+						<ion-option value="BH">Bahrain</ion-option>
+						<ion-option value="BD">Bangladesh</ion-option>
+						<ion-option value="BB">Barbados</ion-option>
+						<ion-option value="BY">Belarus</ion-option>
+						<ion-option value="BE">Belgium</ion-option>
+						<ion-option value="BZ">Belize</ion-option>
+						<ion-option value="BJ">Benin Republic</ion-option>
+						<ion-option value="BM">Bermuda</ion-option>
+						<ion-option value="BT">Bhutan</ion-option>
+						<ion-option value="BO">Bolivia</ion-option>
+						<ion-option value="BA">Bosnia-Herzegovina</ion-option>
+						<ion-option value="BW">Botswana</ion-option>
+						<ion-option value="BR">Brazil</ion-option>
+						<ion-option value="VG">British Virgin Islands</ion-option>
+						<ion-option value="BN">Brunei</ion-option>
+						<ion-option value="BG">Bulgaria</ion-option>
+						<ion-option value="BF">Burkina Faso</ion-option>
+						<ion-option value="BI">Burundi</ion-option>
+						<ion-option value="KH">Cambodia</ion-option>
+						<ion-option value="CA">Canada</ion-option>
+						<ion-option value="CV">Cape Verde</ion-option>
+						<ion-option value="KY">Cayman Islands</ion-option>
+						<ion-option value="CF">Central African Rep</ion-option>
+						<ion-option value="TD">Chad</ion-option>
+						<ion-option value="CL">Chile</ion-option>
+						<ion-option value="CN">China</ion-option>
+						<ion-option value="CX">Christmas Island</ion-option>
+						<ion-option value="CC">Cocos Islands</ion-option>
+						<ion-option value="CO">Colombia</ion-option>
+						<ion-option value="CG">Congo</ion-option>
+						<ion-option value="CK">Cook Islands</ion-option>
+						<ion-option value="CR">Costa Rica</ion-option>
+						<ion-option value="HR">Croatia</ion-option>
+						<ion-option value="CU">Cuba</ion-option>
+						<ion-option value="CY">Cyprus</ion-option>
+						<ion-option value="CZ">Czech Republic</ion-option>
+						<ion-option value="DK">Denmark</ion-option>
+						<ion-option value="DJ">Djibouti</ion-option>
+						<ion-option value="DM">Dominica</ion-option>
+						<ion-option value="DO">Dominican Rep</ion-option>
+						<ion-option value="EC">Ecuador</ion-option>
+						<ion-option value="EG">Egypt</ion-option>
+						<ion-option value="SV">El Salvador</ion-option>
+						<ion-option value="GQ">Equatorial Guinea</ion-option>
+						<ion-option value="ER">Eritrea</ion-option>
+						<ion-option value="EE">Estonia</ion-option>
+						<ion-option value="ET">Ethiopia</ion-option>
+						<ion-option value="FO">Faeroe Is</ion-option>
+						<ion-option value="FK">Falkland Is</ion-option>
+						<ion-option value="FJ">Fiji</ion-option>
+						<ion-option value="FI">Finland</ion-option>
+						<ion-option value="FR">France</ion-option>
+						<ion-option value="GF">French Guyana</ion-option>
+						<ion-option value="PF">French Polynesia</ion-option>
+						<ion-option value="GA">Gabon</ion-option>
+						<ion-option value="GM">Gambia</ion-option>
+						<ion-option value="GE">Georgia</ion-option>
+						<ion-option value="DE">Germany</ion-option>
+						<ion-option value="GH">Ghana</ion-option>
+						<ion-option value="GI">Gibraltar (UK)</ion-option>
+						<ion-option value="GR">Greece</ion-option>
+						<ion-option value="GL">Greenland</ion-option>
+						<ion-option value="GD">Grenada</ion-option>
+						<ion-option value="GP">Guadeloupe</ion-option>
+						<ion-option value="GU">Guam</ion-option>
+						<ion-option value="GT">Guatemala</ion-option>
+						<ion-option value="GN">Guinea</ion-option>
+						<ion-option value="GW">Guinea Bissau</ion-option>
+						<ion-option value="GY">Guyana</ion-option>
+						<ion-option value="HT">Haiti</ion-option>
+						<ion-option value="HN">Honduras</ion-option>
+						<ion-option value="HK">Hong Kong</ion-option>
+						<ion-option value="HU">Hungary</ion-option>
+						<ion-option value="IS">Iceland</ion-option>
+						<ion-option value="IN" selected>India</ion-option>
+						<ion-option value="ID">Indonesia</ion-option>
+						<ion-option value="IR">Iran</ion-option>
+						<ion-option value="IQ">Iraq</ion-option>
+						<ion-option value="IE">Ireland</ion-option>
+						<ion-option value="IL">Israel</ion-option>
+						<ion-option value="IT">Italy</ion-option>
+						<ion-option value="CI">Ivory Coast</ion-option>
+						<ion-option value="JM">Jamaica</ion-option>
+						<ion-option value="JP">Japan</ion-option>
+						<ion-option value="JO">Jordan</ion-option>
+						<ion-option value="KZ">Kazakhstan</ion-option>
+						<ion-option value="KE">Kenya</ion-option>
+						<ion-option value="KI">Kiribati</ion-option>
+						<ion-option value="XK">Kosovo</ion-option>
+						<ion-option value="KW">Kuwait</ion-option>
+						<ion-option value="KG">Kyrgyzstan</ion-option>
+						<ion-option value="LA">Laos</ion-option>
+						<ion-option value="LV">Latvia</ion-option>
+						<ion-option value="LB">Lebanon</ion-option>
+						<ion-option value="LS">Lesotho</ion-option>
+						<ion-option value="LR">Liberia</ion-option>
+						<ion-option value="LY">Libya</ion-option>
+						<ion-option value="LI">Liechtenstein</ion-option>
+						<ion-option value="LT">Lithuania</ion-option>
+						<ion-option value="LU">Luxembourg</ion-option>
+						<ion-option value="MO">Macau</ion-option>
+						<ion-option value="MK">Macedonia</ion-option>
+						<ion-option value="MG">Madagascar</ion-option>
+						<ion-option value="MW">Malawi</ion-option>
+						<ion-option value="MY">Malaysia</ion-option>
+						<ion-option value="MV">Maldives</ion-option>
+						<ion-option value="ML">Mali</ion-option>
+						<ion-option value="MT">Malta</ion-option>
+						<ion-option value="MP">Mariana Islands</ion-option>
+						<ion-option value="MH">Marshall Islands</ion-option>
+						<ion-option value="MQ">Martinique</ion-option>
+						<ion-option value="MR">Mauritania</ion-option>
+						<ion-option value="MU">Mauritius</ion-option>
+						<ion-option value="MX">Mexico</ion-option>
+						<ion-option value="FM">Micronesia</ion-option>
+						<ion-option value="UM">Minor Island</ion-option>
+						<ion-option value="MD">Moldova</ion-option>
+						<ion-option value="MC">Monaco</ion-option>
+						<ion-option value="ME">Montenegro</ion-option>
+						<ion-option value="MS">Montserrat</ion-option>
+						<ion-option value="MA">Morocco</ion-option>
+						<ion-option value="MZ">Mozambique</ion-option>
+						<ion-option value="MM">Myanmar</ion-option>
+						<ion-option value="NA">Namibia</ion-option>
+						<ion-option value="NR">Nauru</ion-option>
+						<ion-option value="NP">Nepal</ion-option>
+						<ion-option value="AN">Netherland Antilles</ion-option>
+						<ion-option value="NL">Netherlands</ion-option>
+						<ion-option value="NC">New Caledonia</ion-option>
+						<ion-option value="NZ">New Zealand</ion-option>
+						<ion-option value="NI">Nicaragua</ion-option>
+						<ion-option value="NE">Niger</ion-option>
+						<ion-option value="NG">Nigeria</ion-option>
+						<ion-option value="NU">Niue</ion-option>
+						<ion-option value="NF">Norfolk Island</ion-option>
+						<ion-option value="NO">Norway</ion-option>
+						<ion-option value="OM">Oman</ion-option>
+						<ion-option value="PK">Pakistan</ion-option>
+						<ion-option value="PA">Panama</ion-option>
+						<ion-option value="PG">Papua New Guinea</ion-option>
+						<ion-option value="PY">Paraguay</ion-option>
+						<ion-option value="KP">Peoples Rep Korea</ion-option>
+						<ion-option value="PE">Peru</ion-option>
+						<ion-option value="PH">Philippines</ion-option>
+						<ion-option value="PL">Poland</ion-option>
+						<ion-option value="PT">Portugal</ion-option>
+						<ion-option value="PR">Puerto Rico</ion-option>
+						<ion-option value="QA">Qatar</ion-option>
+						<ion-option value="CM">Republic Cameroon</ion-option>
+						<ion-option value="RE">Reunion</ion-option>
+						<ion-option value="RO">Romania</ion-option>
+						<ion-option value="RU">Russia</ion-option>
+						<ion-option value="RW">Rwanda</ion-option>
+						<ion-option value="SM">San Marino</ion-option>
+						<ion-option value="SA">Saudi Arabia</ion-option>
+						<ion-option value="SN">Senegal</ion-option>
+						<ion-option value="RS">Serbia</ion-option>
+						<ion-option value="SC">Seychelles</ion-option>
+						<ion-option value="SL">Sierra Leone</ion-option>
+						<ion-option value="SG">Singapore</ion-option>
+						<ion-option value="SK">Slovakia</ion-option>
+						<ion-option value="SI">Slovenia</ion-option>
+						<ion-option value="SB">Solomon Island</ion-option>
+						<ion-option value="SO">Somalia</ion-option>
+						<ion-option value="ZA">South Africa</ion-option>
+						<ion-option value="KR">South Korea</ion-option>
+						<ion-option value="ES">Spain</ion-option>
+						<ion-option value="LK">Sri Lanka</ion-option>
+						<ion-option value="KN">St Kitts and Nevis</ion-option>
+						<ion-option value="LC">St Lucia</ion-option>
+						<ion-option value="VC">St Vincent</ion-option>
+						<ion-option value="SD">Sudan</ion-option>
+						<ion-option value="SR">Suriname</ion-option>
+						<ion-option value="SZ">Swaziland</ion-option>
+						<ion-option value="SE">Sweden</ion-option>
+						<ion-option value="CH">Switzerland</ion-option>
+						<ion-option value="SY">Syria</ion-option>
+						<ion-option value="TW">Taiwan</ion-option>
+						<ion-option value="TJ">Tajikistan</ion-option>
+						<ion-option value="TZ">Tanzania</ion-option>
+						<ion-option value="TH">Thailand</ion-option>
+						<ion-option value="TL">Timor - Leste</ion-option>
+						<ion-option value="TG">Togo</ion-option>
+						<ion-option value="TO">Tonga</ion-option>
+						<ion-option value="TT">Trinidad and Tobago</ion-option>
+						<ion-option value="TN">Tunisia</ion-option>
+						<ion-option value="TR">Turkey</ion-option>
+						<ion-option value="TM">Turkmenistan</ion-option>
+						<ion-option value="TC">Turks Caicos</ion-option>
+						<ion-option value="TV">Tuvalu</ion-option>
+						<ion-option value="VI">US Virgin Islands</ion-option>
+						<ion-option value="US">USA</ion-option>
+						<ion-option value="UG">Uganda</ion-option>
+						<ion-option value="UA">Ukraine</ion-option>
+						<ion-option value="AE">United Arab Emirates</ion-option>
+						<ion-option value="GB">United Kingdom</ion-option>
+						<ion-option value="UY">Uruguay</ion-option>
+						<ion-option value="UZ">Uzbekistan</ion-option>
+						<ion-option value="VU">Vanuatu</ion-option>
+						<ion-option value="VE">Venezuela</ion-option>
+						<ion-option value="VN">Vietnam</ion-option>
+						<ion-option value="WS">Western Samoa</ion-option>
+						<ion-option value="YE">Yemen Republic</ion-option>
+						<ion-option value="ZM">Zambia</ion-option>
+						<ion-option value="ZW">Zimbabwe</ion-option>
+		</ion-select>		
+      </ion-item>
+      <ion-item *ngIf="data &&  data != 'notFound' && suForm.controls['country'].value!='IN'">
+	     <ion-label color="primary">State / Provense</ion-label>
+         <ion-input formControlName="state" type="text" placeholder="Please Enter State/Provense.." [(ngModel)]="suForm.controls['state'].value" name="state"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="data &&  data != 'notFound' && suForm.controls['country'].value=='IN'">
+		<ion-label color="primary">State</ion-label>
+        <ion-select formControlName="state" [(ngModel)]="suForm.controls['state'].value" name="state">
+			<ion-option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</ion-option>
+			<ion-option value="Andhra Pradesh">Andhra Pradesh</ion-option>
+			<ion-option value="Arunachal Pradesh">Arunachal Pradesh</ion-option>
+			<ion-option value="Assam">Assam</ion-option>
+			<ion-option value="Bihar">Bihar</ion-option>
+			<ion-option value="Chandigarh">Chandigarh</ion-option>
+			<ion-option value="Chhattisgarh">Chhattisgarh</ion-option>
+			<ion-option value="Dadra and Nagar Haveli">Dadra and Nagar Haveli</ion-option>
+			<ion-option value="Daman and Diu">Daman and Diu</ion-option>
+			<ion-option value="Delhi">Delhi</ion-option>
+			<ion-option value="Goa">Goa</ion-option>
+			<ion-option value="Gujarat">Gujarat</ion-option>
+			<ion-option value="Haryana">Haryana</ion-option>
+			<ion-option value="Himachal Pradesh">Himachal Pradesh</ion-option>
+			<ion-option value="Jammu and Kashmir">Jammu and Kashmir</ion-option>
+			<ion-option value="Jharkhand">Jharkhand</ion-option>
+			<ion-option value="Karnataka">Karnataka</ion-option>
+			<ion-option value="Kerala">Kerala</ion-option>
+			<ion-option value="Lakshadweep">Lakshadweep</ion-option>
+			<ion-option value="Madhya Pradesh">Madhya Pradesh</ion-option>
+			<ion-option value="Maharashtra">Maharashtra</ion-option>
+			<ion-option value="Manipur">Manipur</ion-option>
+			<ion-option value="Meghalaya">Meghalaya</ion-option>
+			<ion-option value="Mizoram">Mizoram</ion-option>
+			<ion-option value="Nagaland">Nagaland</ion-option>
+			<ion-option value="Odisha">Odisha</ion-option>
+			<ion-option value="Puducherry">Puducherry</ion-option>
+			<ion-option value="Punjab">Punjab</ion-option>
+			<ion-option value="Rajasthan">Rajasthan</ion-option>
+			<ion-option value="Sikkim">Sikkim</ion-option>
+			<ion-option value="Tamil Nadu">Tamil Nadu</ion-option>
+			<ion-option value="Telangana">Telangana</ion-option>
+			<ion-option value="Tripura">Tripura</ion-option>
+			<ion-option value="Uttar Pradesh">Uttar Pradesh</ion-option>
+			<ion-option value="Uttarakhand">Uttarakhand</ion-option>
+			<ion-option value="West Bengal">West Bengal"</ion-option>		
+		</ion-select>
+      </ion-item>
+
+      <ion-item *ngIf="data &&  data != 'notFound'">
+		<ion-label color="primary">Date Of Birth</ion-label>
+        <ion-datetime formControlName="dob" displayFormat="DD-MMM-YYYY" min="1930" [(ngModel)]="suForm.controls['dob'].value" name="dob"></ion-datetime>
+      </ion-item>
+	  <ion-card  *ngIf="formErrors.dob">
+			<span class="errMsg"> {{ formErrors.dob }} </span>
+       </ion-card>
+      <ion-item *ngIf="data &&  data != 'notFound'">
+		<ion-label color="primary">Gender</ion-label>
+        <ion-select formControlName="gender" [(ngModel)]="suForm.controls['gender'].value" name="gender">
+		  <ion-option value="f">Female</ion-option>
+		  <ion-option value="m">Male</ion-option>
+		  <ion-option value="o">Other</ion-option>
+		  <ion-option value="t">Transgender</ion-option>
+		</ion-select>
+
+      </ion-item>
+      <ion-item *ngIf="data &&  data != 'notFound'">
+		<ion-label color="primary">Profession</ion-label>
+        <ion-select formControlName="profession" [(ngModel)]="suForm.controls['profession'].value" name="profession">
+		  <ion-option value="-1" selected>Select Profession</ion-option>
+		  <ion-option value="0">Architect</ion-option>
+		  <ion-option value="1">Business</ion-option>
+		  <ion-option value="2">CA/CS</ion-option>
+		  <ion-option value="3">Doctor</ion-option>
+		  <ion-option value="4">Engineer</ion-option>
+		  <ion-option value="5">Farmer</ion-option>
+		  <ion-option value="6">Housewife</ion-option>
+		  <ion-option value="7">IT Consultant</ion-option>
+		  <ion-option value="8">Lawyer</ion-option>
+		  <ion-option value="9">Pharmacists</ion-option>
+		  <ion-option value="10">Police</ion-option>
+		  <ion-option value="11">Politics</ion-option>
+		  <ion-option value="12">Social Worker</ion-option>
+		  <ion-option value="13">Scientist</ion-option>
+		  <ion-option value="14">Student</ion-option>
+		  <ion-option value="15">Teacher</ion-option>
+		  <ion-option value="16">Other</ion-option>
+		</ion-select>
+
+      </ion-item>
+      <ion-item *ngIf="data &&  data != 'notFound'">
+		<ion-label color="primary">Joined From</ion-label>
+        <ion-datetime formControlName="joinedFrom" displayFormat="DD-MMM-YYYY" min="1997" [(ngModel)]="suForm.controls['joinedFrom'].value" name="joinedFrom"></ion-datetime>
+      </ion-item>
+        <ion-card  *ngIf="formErrors.joinedFrom">
+			<span class="errMsg"> {{ formErrors.joinedFrom }} </span>
+       </ion-card>
+	  
+      <ion-item *ngIf="data &&  data != 'notFound'">
+		<ion-label color="primary">Available On</ion-label>
+        <!--<ion-input formControlName="availableOn" type="hidden" [(ngModel)]="suForm.controls['availableOn'].value" name="availableOn"></ion-input>-->
+      </ion-item>
+      <ion-item *ngIf="data &&  data != 'notFound'">
+		<ion-label color="primary">Monday</ion-label>
+        <ion-select formControlName="monAvailability"  [(ngModel)]="suForm.controls['monAvailability'].value" name="monAvailability">
+		  <ion-option value="N">Not Available</ion-option>
+		  <ion-option value="L">All Day</ion-option>
+		  <ion-option value="M">Morning</ion-option>
+		  <ion-option value="A">Afternoon</ion-option>
+		  <ion-option value="E">Evening</ion-option>
+		  <ion-option value="MA">Morning And Afternoon</ion-option>
+		  <ion-option value="AE">Afternoon And Evening</ion-option>
+		  <ion-option value="ME">Morning And Evening</ion-option>
+		</ion-select>
+      </ion-item>
+      <ion-item *ngIf="data &&  data != 'notFound'">
+	  <ion-label color="primary">Tuesday</ion-label>
+        <ion-select formControlName="tueAvailability" [(ngModel)]="suForm.controls['tueAvailability'].value" name="tueAvailability">
+		  <ion-option value="N">Not Available</ion-option>
+		  <ion-option value="L">All Day</ion-option>
+		  <ion-option value="M">Morning</ion-option>
+		  <ion-option value="A">Afternoon</ion-option>
+		  <ion-option value="E">Evening</ion-option>
+		  <ion-option value="MA">Morning And Afternoon</ion-option>
+		  <ion-option value="AE">Afternoon And Evening</ion-option>
+		  <ion-option value="ME">Morning And Evening</ion-option>
+		</ion-select>
+      </ion-item>
+      <ion-item *ngIf="data &&  data != 'notFound'">
+		<ion-label color="primary">Wednesday</ion-label>
+        <ion-select formControlName="wedAvailability" [(ngModel)]="suForm.controls['wedAvailability'].value" name="wedAvailability">
+		  <ion-option value="N">Not Available</ion-option>
+		  <ion-option value="L">All Day</ion-option>
+		  <ion-option value="M">Morning</ion-option>
+		  <ion-option value="A">Afternoon</ion-option>
+		  <ion-option value="E">Evening</ion-option>
+		  <ion-option value="MA">Morning And Afternoon</ion-option>
+		  <ion-option value="AE">Afternoon And Evening</ion-option>
+		  <ion-option value="ME">Morning And Evening</ion-option>
+		</ion-select>
+      </ion-item>
+      <ion-item *ngIf="data &&  data != 'notFound'">
+		<ion-label color="primary">Thursday</ion-label>
+        <ion-select formControlName="thuAvailability" [(ngModel)]="suForm.controls['thuAvailability'].value" name="thuAvailability">
+		  <ion-option value="N">Not Available</ion-option>
+		  <ion-option value="L">All Day</ion-option>
+		  <ion-option value="M">Morning</ion-option>
+		  <ion-option value="A">Afternoon</ion-option>
+		  <ion-option value="E">Evening</ion-option>
+		  <ion-option value="MA">Morning And Afternoon</ion-option>
+		  <ion-option value="AE">Afternoon And Evening</ion-option>
+		  <ion-option value="ME">Morning And Evening</ion-option>
+		</ion-select>
+      </ion-item>
+      <ion-item *ngIf="data &&  data != 'notFound'">
+		<ion-label color="primary">Friday</ion-label>
+        <ion-select formControlName="friAvailability" [(ngModel)]="suForm.controls['friAvailability'].value" name="friAvailability">
+		  <ion-option value="N">Not Available</ion-option>
+		  <ion-option value="L">All Day</ion-option>
+		  <ion-option value="M">Morning</ion-option>
+		  <ion-option value="A">Afternoon</ion-option>
+		  <ion-option value="E">Evening</ion-option>
+		  <ion-option value="MA">Morning And Afternoon</ion-option>
+		  <ion-option value="AE">Afternoon And Evening</ion-option>
+		  <ion-option value="ME">Morning And Evening</ion-option>
+		</ion-select>
+      </ion-item>
+      <ion-item *ngIf="data &&  data != 'notFound'">
+		<ion-label color="primary">Saturday</ion-label>
+        <ion-select formControlName="satAvailability" [(ngModel)]="suForm.controls['satAvailability'].value" name="satAvailability">
+		  <ion-option value="N">Not Available</ion-option>
+		  <ion-option value="L">All Day</ion-option>
+		  <ion-option value="M">Morning</ion-option>
+		  <ion-option value="A">Afternoon</ion-option>
+		  <ion-option value="E">Evening</ion-option>
+		  <ion-option value="MA">Morning And Afternoon</ion-option>
+		  <ion-option value="AE">Afternoon And Evening</ion-option>
+		  <ion-option value="ME">Morning And Evening</ion-option>
+		</ion-select>
+      </ion-item>
+      <ion-item *ngIf="data &&  data != 'notFound'">
+		<ion-label color="primary">Sunday</ion-label>
+        <ion-select formControlName="sunAvailability" [(ngModel)]="suForm.controls['sunAvailability'].value" name="sunAvailability">
+		  <ion-option value="N">Not Available</ion-option>
+		  <ion-option value="L">All Day</ion-option>
+		  <ion-option value="M">Morning</ion-option>
+		  <ion-option value="A">Afternoon</ion-option>
+		  <ion-option value="E">Evening</ion-option>
+		  <ion-option value="MA">Morning And Afternoon</ion-option>
+		  <ion-option value="AE">Afternoon And Evening</ion-option>
+		  <ion-option value="ME">Morning And Evening</ion-option>
+		</ion-select>
+      </ion-item>
+      <ion-item *ngIf="data &&  data != 'notFound'">
+		<ion-label color="primary">Preferred Way to Contact and Time</ion-label>
+        <!--<ion-input formControlName="preferredWayNTime" type="hidden" [(ngModel)]="suForm.controls['preferredWayNTime'].value" name="preferredWayNTime"></ion-input>-->
+      </ion-item>
+      <ion-item *ngIf="data &&  data != 'notFound'">
+		<ion-label color="primary">Mobile</ion-label>
+        <ion-select formControlName="mobContact" [(ngModel)]="suForm.controls['mobContact'].value" name="mobContact">
+		  <ion-option value="N">Not Preferred</ion-option>
+		  <ion-option value="L">All Day</ion-option>
+		  <ion-option value="M">Morning</ion-option>
+		  <ion-option value="A">Afternoon</ion-option>
+		  <ion-option value="E">Evening</ion-option>
+		  <ion-option value="MA">Morning And Afternoon</ion-option>
+		  <ion-option value="AE">Afternoon And Evening</ion-option>
+		  <ion-option value="ME">Morning And Evening</ion-option>
+		</ion-select>
+      </ion-item>
+      <ion-item *ngIf="data &&  data != 'notFound'">
+	  <ion-label color="primary">Email</ion-label>
+        <ion-select formControlName="emailContact" [(ngModel)]="suForm.controls['emailContact'].value" name="emailContact">
+		  <ion-option value="N">Not Preferred</ion-option>
+		  <ion-option value="P">Preferred</ion-option>
+		</ion-select>
+      </ion-item>	  
+      <ion-item *ngIf="data && data != 'notFound' && data['orgID'] && data['orgID'] == '1'">
+		<ion-label color="primary">Remarks</ion-label>
+        <ion-textarea formControlName="remarks" [(ngModel)]="suForm.controls['remarks'].value" name="remarks" rows="4" placeholder="Please enter remarks here..."></ion-textarea>
+      </ion-item>
+      <ion-item *ngIf="data && data != 'notFound' && data['orgID'] && data['orgID'] == '1'">
+		<ion-label color="primary">Status</ion-label>
+        <ion-select formControlName="status" [(ngModel)]="suForm.controls['status'].value" name="status">
+		  <ion-option value="a">Active</ion-option>
+		  <ion-option value="i">Inactive</ion-option>
+		</ion-select>
+      </ion-item>
+    </ion-list>
+
+    <button ion-button block [disabled]="invalidForm || noConnection()" class="log-in-btn">Submit </button>
+
+    <div padding class="formMsg" *ngIf="invalidForm || noConnection()">
+      The submit button will remain disabled until:
+		<ul>
+			<li>All the mandatory fields (with <span class="mandField">*</span>) are not filled with data.</li>
+			<li>There is a internet connection available.</li>
+		</ul>
+    </div>	
+	
+    <div padding class="error" *ngIf="error">
+      <p>{{error}}</p>
+    </div>	
+  </form>
+
+
+
+
+</ion-content>

@@ -1,0 +1,96 @@
+<!--  ================ DOnation Management ======================= -->
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>  
+    <ion-title>Donation List</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+	  <form [formGroup]="dnForm" (ngSubmit)="listDonationData()" >
+    <ion-list>
+	  <ion-item>
+		<ion-label color="primary">From Date <span class="mandField">*</span></ion-label>
+		<ion-datetime formControlName="fromDate" displayFormat="DD-MMM-YYYY" min="2016" [(ngModel)]="dnForm.controls['fromDate'].value" name="fromDate"></ion-datetime>
+	  </ion-item>      
+	  <ion-card  *ngIf="formErrors.fromDate">
+			<span class="errMsg"> {{ formErrors.fromDate }} </span>
+       </ion-card>
+	  <ion-item>
+		<ion-label color="primary">To Date <span class="mandField">*</span></ion-label>
+		<ion-datetime formControlName="toDate" displayFormat="DD-MMM-YYYY" min="2016" max="2017" [(ngModel)]="dnForm.controls['toDate'].value" name="toDate"></ion-datetime>
+	  </ion-item>      
+	  <ion-card  *ngIf="formErrors.toDate">
+			<span class="errMsg"> {{ formErrors.toDate }} </span>
+       </ion-card>
+		<ion-item>
+			<ion-label color="primary">Amount Due By <span class="mandField">*</span></ion-label>
+			<ion-datetime formControlName="remAmtByDate" displayFormat="DD-MMM-YYYY" min="2016" max="2017" [(ngModel)]="dnForm.controls['remAmtByDate'].value" name="remAmtByDate"></ion-datetime>
+		</ion-item>
+		<ion-card  *ngIf="formErrors.remAmtByDate">
+			<span class="errMsg"> {{ formErrors.remAmtByDate }} </span>
+		</ion-card>
+		<ion-item>
+			<ion-label color="primary">Contribution For <span class="mandField">*</span></ion-label>
+			<ion-select formControlName="contributeTo" [(ngModel)]="dnForm.controls['contributeTo'].value" name="contributeTo">
+			  <ion-option value="-1" selected>All</ion-option>
+			  <ion-option value="MNN">MNN</ion-option>
+			  <ion-option value="Sanskar">Sanskar</ion-option>
+			  <ion-option value="Ambarsthan">Ambarsthan</ion-option>
+			  <ion-option value="Other">Other</ion-option>
+			</ion-select>
+		</ion-item>
+		<ion-card  *ngIf="formErrors.contributeTo">
+			<span class="errMsg"> {{ formErrors.contributeTo }} </span>
+		</ion-card>
+    </ion-list>
+
+    <button ion-button block [disabled]="invalidForm || noConnection()" class="log-in-btn">Submit </button>
+
+    <div padding class="formMsg" *ngIf="invalidForm || noConnection()">
+      The submit button will remain disabled until:
+		<ul>
+			<li>All the mandatory fields (with <span class="mandField">*</span>) are not filled with data.</li>
+			<li>There is a internet connection available.</li>
+		</ul>
+    </div>	
+    <div padding class="error" *ngIf="error">
+      <p>{{error}}</p>
+    </div>	
+  </form>
+  <br>
+  <ion-list>
+	  <ion-item *ngIf="submitAttempt && dnList && dnList.length == 0" style="background-color: #EEEEEE;">
+		<div style="font-weight: bold;font-size: 110%;wrap;">No donation entries found for selected dates! Please try changing the dates.</div>
+	  </ion-item>
+	  <ion-item *ngFor="let dl of dnList| slice:0:1;" style="background-color: #CCCCCC;">
+		<div [innerHTML]="dl['updatedBy']" style="font-weight: bold;font-size: 120%;"></div>
+	  </ion-item>
+	  <ion-item *ngFor="let dl of dnList" >
+		<ion-avatar item-left>
+		  <span style="font-size: 300%;color:#00FF00;">{{dl['contributeTo'].substring(0,1)}}</span>
+		</ion-avatar>
+		<h2>{{dl['createdBy']}}</h2>
+		<!--<span style="color:#bbb;font-size: 75%;">Contri. For: {{dl['contributeTo']}}</span><span style="color:#bbb;font-size: 75%;padding-left: 3em;">Amt: {{dl['amount']}}</span><span style="color:#bbb;font-size: 75%;padding-left: 3em;">Today's Amt: {{dl['todaysAmount']}}</span>-->
+        <p>
+          <span style="color:#bbb;font-size: 75%;">Amt: {{dl['amount']}}</span>
+          <span style="color:#bbb;font-size: 75%;padding-left: 3em">Today's Amt: {{dl['todaysAmount']}}</span>
+        </p>
+        <p>
+          <span style="color:#bbb;font-size: 75%;">Contri. For: {{dl['contributeTo']}}</span>
+          <span style="color:#bbb;font-size: 75%;padding-left: 3em">Status: {{dl['status']}}</span>
+        </p>
+		<p>
+          <span style="color:#bbb;font-size: 75%;">Mode: {{dl['paymentMode']}} </span>
+          <span style="color:#bbb;font-size: 75%;padding-left: 3em;">Tran ID: {{dl['tranID']}} </span>
+        </p>
+        <!--<p><span style="color:#bbb;font-size: 75%;">Freq: {{dl['contributeFreq']}}</span><span style="color:#bbb;font-size: 75%;padding-left: 3em;">Amt By: {{dl['remAmtByDate']}} <i *ngIf="!dl['remAmtByDate']">Not Available</i></span></p>-->
+	  </ion-item>
+  </ion-list>
+
+</ion-content>

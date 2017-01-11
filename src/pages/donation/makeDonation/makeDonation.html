@@ -1,0 +1,116 @@
+<!-- ==================== Make DOnation Page ===================  -->
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>  
+    <ion-title>Donation</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+	  <form [formGroup]="dnForm" (ngSubmit)="saveDonationData()">
+    <ion-list>
+		<ion-item>
+			<ion-label color="primary">I Wish To Contribute To <span class="mandField">*</span></ion-label>
+			<ion-select formControlName="contributeTo" [(ngModel)]="dnForm.controls['contributeTo'].value" name="contributeTo">
+			  <ion-option value="" selected>Select Purpose</ion-option>
+			  <ion-option value="MNN">MNN</ion-option>
+			  <ion-option value="Sanskar">Sanskar</ion-option>
+			  <ion-option value="Ambarsthan">Ambarsthan</ion-option>
+			  <ion-option value="Other">Other</ion-option>
+			</ion-select>
+		</ion-item>
+		<ion-card  *ngIf="formErrors.contributeTo">
+			<span class="errMsg"> {{ formErrors.contributeTo }} </span>
+		</ion-card>
+		<ion-item *ngIf="false">
+			<ion-label color="primary">I Wish To Contribute <span class="mandField">*</span></ion-label>
+			<ion-select formControlName="contributeFreq" [(ngModel)]="dnForm.controls['contributeFreq'].value" name="contributeFreq">
+			  <ion-option value="" selected>Select Frequency</ion-option>
+			  <ion-option value="One Time">One Time</ion-option>
+			  <ion-option value="Monthly">Monthly</ion-option>
+			  <ion-option value="Quarterly">Quarterly</ion-option>
+			  <ion-option value="Half Yearly">Half Yearly</ion-option>
+			  <ion-option value="Yearly">Yearly</ion-option>
+			  <ion-option value="Other">Other</ion-option>
+			</ion-select>
+		</ion-item>
+		<ion-card  *ngIf="formErrors.contributeFreq">
+			<span class="errMsg"> {{ formErrors.contributeFreq }} </span>
+		</ion-card>
+	<ion-item *ngIf="false">
+		<ion-label color="primary">Mode Of Payment <span class="mandField">*</span></ion-label>
+			<ion-select formControlName="paymentMode" [(ngModel)]="dnForm.controls['paymentMode'].value" name="paymentMode">
+			  <ion-option value="" selected>Select Payment Mode</ion-option>
+			  <ion-option value="Paytm">Paytm</ion-option>
+			  <ion-option value="Debit Card">Debit Card</ion-option>
+			  <ion-option value="Credit Card">Credit Card</ion-option>
+			  <ion-option value="Netbanking">Netbanking</ion-option>
+			</ion-select>
+      </ion-item>
+	  <ion-card  *ngIf="formErrors.paymentMode">
+			<span class="errMsg"> {{ formErrors.paymentMode }} </span>
+       </ion-card>
+      <ion-input formControlName="userID" *ngIf="false" type="text" [(ngModel)]="dnForm.controls['userID'].value" name="userID"></ion-input>
+      <ion-item>
+		<ion-label color="primary">Amount <span class="mandField">*</span></ion-label>
+        <ion-input formControlName="amount" type="number" placeholder="Commitment Amount.." [(ngModel)]="dnForm.controls['amount'].value" name="amount" ></ion-input>
+      </ion-item>
+	  <ion-card  *ngIf="formErrors.amount">
+			<span class="errMsg"> {{ formErrors.amount }} </span>
+       </ion-card>
+	  
+      <ion-item>
+		<ion-label color="primary">Today's Amount <span class="mandField">*</span></ion-label>
+		<ion-input formControlName="todaysAmount" type="number" placeholder="Today's Amount.." [(ngModel)]="dnForm.controls['todaysAmount'].value" name="todaysAmount"></ion-input>
+      </ion-item>
+	  <ion-card  *ngIf="formErrors.todaysAmount">
+			<span class="errMsg"> {{ formErrors.todaysAmount }} </span>
+       </ion-card>
+	  <ion-item *ngIf="dnForm.controls['amount'].value !==   dnForm.controls['todaysAmount'].value">
+		<ion-label color="primary">Remaining Amount By Date</ion-label>
+		<ion-datetime formControlName="remAmtByDate" type="date" [(ngModel)]="dnForm.controls['remAmtByDate'].value"  
+        max="{{nextYear}}" displayFormat="DD-MMM-YYYY" name="remAmtByDate"></ion-datetime>
+	  </ion-item>      
+	  <ion-card  *ngIf="formErrors.remAmtByDate">
+			<span class="errMsg"> {{ formErrors.remAmtByDate }} </span>
+       </ion-card>
+	  <ion-item *ngIf="dnForm.controls['amount'].value !==   dnForm.controls['todaysAmount'].value">
+		<ion-label color="primary">Remind Me</ion-label>
+			<ion-select formControlName="reminderPeriod" [(ngModel)]="dnForm.controls['reminderPeriod'].value" name="reminderPeriod">
+			  <ion-option value="1 Day Before" selected>1 Day Before</ion-option>
+			  <ion-option value="3 Days Before">3 Days Before</ion-option>
+			  <ion-option value="1 Week Before">1 Week Before</ion-option>
+			  <ion-option value="1 Month Before">1 Month Before</ion-option>
+			</ion-select>
+
+      </ion-item>
+      <ion-item>
+		<ion-label color="primary">Donation Receipt</ion-label>
+			<ion-select formControlName="donationReceipt" [(ngModel)]="dnForm.controls['donationReceipt'].value" name="donationReceipt">
+			  <ion-option value="By Email" selected>By Email</ion-option>
+			  <ion-option value="By Courier">By Courier</ion-option>
+			  <ion-option value="By App">By App</ion-option>
+			</ion-select>
+      </ion-item>
+    </ion-list>
+
+    <button ion-button block [disabled]="invalidForm" class="log-in-btn">Submit </button>
+
+    <div padding class="formMsg" *ngIf="invalidForm">
+      The submit button will remain disabled until:
+		<ul>
+			<li>All the mandatory fields (with <span class="mandField">*</span>) are not filled with data.</li>
+			<li>There is a internet connection available.</li>
+		</ul>
+    </div>	
+    <div padding class="error" *ngIf="error">
+      <p>{{error}}</p>
+    </div>	
+  </form>
+
+</ion-content>
